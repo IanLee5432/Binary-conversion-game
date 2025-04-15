@@ -31,23 +31,19 @@ def check_valid_input(player_input, mode):
         
 #Asks player if they want to play again
 def play_again():
-    valid_input = False
-    while not valid_input:
-        play_again = input("play again? y/n\n")
-        if play_again != "y" and play_again != "n":
-            print("invalid input")
+    while True:
+        response = input("Play again? (y/n): ")
+        if response == "y":
+            return True
+        elif response == "n":
+            print("Thanks for playing!")
+            return False
         else:
-            if play_again == "y":
-                return True
-            else:
-                print("Thanks for playing!")
-                exit()
+            print("Invalid input. Please enter 'y' or 'n'.")
             
 
-ready = False
-
 #Determines which mode to put the game in
-while not ready:
+while True:
     mode = input("0 for binary to decimal, 1 for decimal to binary\n")
     if mode == "0":
         mode = int(mode)
@@ -56,47 +52,46 @@ while not ready:
         mode = int(mode)
         break
     else:
-        print("invalid input")
+        print("Invalid input. Please enter 0 or 1")
 
 
 
 """GAME LOOP"""
 while True:
-    running = True
+    correct_answer = random.randint(0, 255)
+    binary_number = decimal_to_binary(correct_answer)
+    
     if mode == 1:
-        correct_answer = random.randint(0, 255)
-        binary_number = decimal_to_binary(correct_answer)
-        
-        while running: 
-            guess = input("What is " + str(correct_answer) + " in binary?\n")
-            if check_valid_input(guess, 1) == True:
-                if guess == binary_number:
-                    print("Correct!")
-                    running = False
-                else:
-                    print("Wrong. The correct answer is " + str(binary_number))
-                    running = False
+        #Decimal to binary
+        guess = input("What is " + str(correct_answer) + " in binary?\n")
+        if check_valid_input(guess, 1) == True:
+            if guess == binary_number:
+                print("Correct!")
             else:
-                print("Invalid input. Please enter exactly 8 binary digits (0s and 1s).")
-                continue
+                print("Wrong. The correct answer is " + str(binary_number))
+        else:
+            print("Invalid input. Please enter exactly 8 binary digits (0s and 1s).")
+            continue
             
-        play_again()
-        continue
+        if play_again() == True:
+            continue
+        else:
+            exit()
     
     else:
-        correct_answer = random.randint(0,255)
-        binary_number = decimal_to_binary(correct_answer)
-        while running:
-            guess = input("What is " + str(binary_number) + " in decimal?\n")
-            if check_valid_input(guess, 0) == True:
-                if guess == str(correct_answer):
-                    print("correct!")
-                    running = False
-                else:
-                    print("Wrong. The correct answer is " + str(correct_answer))
-                    running = False
+        #Binary to decimal
+        guess = input("What is " + str(binary_number) + " in decimal?\n")
+        if check_valid_input(guess, 0) == True:
+            if guess == str(correct_answer):
+                print("correct!")
             else:
-                print("Invalid input. Please enter a number")
-                continue
-        play_again()
+                print("Wrong. The correct answer is " + str(correct_answer))
+        else:
+            print("Invalid input. Please enter a number")
+            continue
+        
+    if play_again() == True:
         continue
+    else:
+        exit()
+
