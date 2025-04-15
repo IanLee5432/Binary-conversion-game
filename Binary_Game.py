@@ -1,6 +1,8 @@
 import random
 
 pows_of_2 = [128, 64, 32, 16, 8, 4, 2, 1]
+score = 0
+attempts = 0
 
 #Converts decimal to binary
 def decimal_to_binary(dec_num):
@@ -24,6 +26,7 @@ def check_valid_input(player_input, mode):
         else:
             return False
     if mode == 0:
+        player_input = player_input.strip() #Takes out extra spaces
         for char in player_input:
             if not char.isdigit():
                 return False
@@ -36,7 +39,7 @@ def play_again():
         if response == "y":
             return True
         elif response == "n":
-            print("Thanks for playing!")
+            print("Thanks for playing! Your score was " + str(score) + "/" + str(attempts) + ", or " + str(round(score/attempts, 2)) + "%.")
             return False
         else:
             print("Invalid input. Please enter 'y' or 'n'.")
@@ -67,8 +70,11 @@ while True:
         if check_valid_input(guess, 1) == True:
             if guess == binary_number:
                 print("Correct!")
+                score = score + 1
+                attempts = attempts + 1
             else:
                 print("Wrong. The correct answer is " + str(binary_number))
+                attempts = attempts + 1
         else:
             print("Invalid input. Please enter exactly 8 binary digits (0s and 1s).")
             continue
@@ -76,16 +82,19 @@ while True:
         if play_again() == True:
             continue
         else:
-            exit()
+            break
     
-    else:
+    else:#if mode == 0
         #Binary to decimal
         guess = input("What is " + str(binary_number) + " in decimal?\n")
         if check_valid_input(guess, 0) == True:
             if guess == str(correct_answer):
                 print("correct!")
+                score = score + 1
+                attempts = attempts + 1
             else:
                 print("Wrong. The correct answer is " + str(correct_answer))
+                attempts = attempts + 1
         else:
             print("Invalid input. Please enter a number")
             continue
@@ -93,5 +102,4 @@ while True:
     if play_again() == True:
         continue
     else:
-        exit()
-
+        break
