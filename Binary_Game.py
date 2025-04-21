@@ -4,7 +4,7 @@ pows_of_2 = [128, 64, 32, 16, 8, 4, 2, 1]
 score = 0
 attempts = 0
 
-#Converts decimal to binary
+#Converts decimal to binary, returns an 8-digit binary number as a string
 def decimal_to_binary(dec_num):
     binary_num = ""
     for num in pows_of_2:
@@ -15,7 +15,8 @@ def decimal_to_binary(dec_num):
             binary_num = binary_num + "0"
     return binary_num
 
-#Checks if player input is valid
+#Checks if player input is valid, returns boolean
+#Mode 1 = checks if it is a valid binary num, Mode 0 checks if they input a number
 def check_valid_input(player_input, mode):
     if mode == 1:
         if len(player_input) == 8:
@@ -39,7 +40,7 @@ def play_again():
         if response == "y":
             return True
         elif response == "n":
-            print("Thanks for playing! Your score was " + str(score) + "/" + str(attempts) + ", or " + str(round(score/attempts, 2)) + "%.")
+            print("Thanks for playing! Your score was " + str(score) + "/" + str(attempts) + ", or " + str(round(score/attempts, 2)*100) + "%.")
             return False
         else:
             print("Invalid input. Please enter 'y' or 'n'.")
@@ -50,56 +51,50 @@ while True:
     mode = input("0 for binary to decimal, 1 for decimal to binary\n")
     if mode == "0":
         mode = int(mode)
-        break
     elif mode == "1":
         mode = int(mode)
-        break
     else:
         print("Invalid input. Please enter 0 or 1")
-
-
-
-"""GAME LOOP"""
-while True:
-    correct_answer = random.randint(0, 255)
-    binary_number = decimal_to_binary(correct_answer)
     
-    if mode == 1:
-        #Decimal to binary
-        guess = input("What is " + str(correct_answer) + " in binary?\n")
-        if check_valid_input(guess, 1) == True:
-            if guess == binary_number:
-                print("Correct!")
-                score = score + 1
-                attempts = attempts + 1
-            else:
-                print("Wrong. The correct answer is " + str(binary_number))
-                attempts = attempts + 1
-        else:
-            print("Invalid input. Please enter exactly 8 binary digits (0s and 1s).")
-            continue
-            
-        if play_again() == True:
-            continue
-        else:
-            break
+    for i in range(5):
+        correct_answer = random.randint(0, 255)
+        binary_number = decimal_to_binary(correct_answer)
     
-    else:#if mode == 0
-        #Binary to decimal
-        guess = input("What is " + str(binary_number) + " in decimal?\n")
-        if check_valid_input(guess, 0) == True:
-            if guess == str(correct_answer):
-                print("correct!")
-                score = score + 1
-                attempts = attempts + 1
-            else:
-                print("Wrong. The correct answer is " + str(correct_answer))
-                attempts = attempts + 1
-        else:
-            print("Invalid input. Please enter a number")
-            continue
-        
-    if play_again() == True:
-        continue
-    else:
+        if mode == 1:
+            # Decimal to binary game
+            while True:
+                guess = input("What is " + str(correct_answer) + " in binary?\n")
+                if check_valid_input(guess, 1):
+                    if guess == binary_number:
+                        print("Correct!")
+                        score += 1
+                        attempts += 1
+                        break
+                    else:
+                        print("Wrong. The correct answer is " + str(binary_number))
+                        attempts += 1
+                        break
+                else:
+                    print("Invalid input. Please enter exactly 8 binary digits (0s and 1s).")
+                    continue
+    
+        else:  # Binary to decimal game
+            while True:
+                guess = input("What is " + str(binary_number) + " in decimal?\n")
+                if check_valid_input(guess, 0):
+                    if guess == str(correct_answer):
+                        print("Correct!")
+                        score += 1
+                        attempts += 1
+                        break
+                    else:
+                        print("Wrong. The correct answer is " + str(correct_answer))
+                        attempts += 1
+                        break
+                else:
+                    print("Invalid input. Please enter a number")
+                    continue
+
+    # Ask the user if they want to play again
+    if not play_again():
         break
