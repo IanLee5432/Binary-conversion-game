@@ -40,7 +40,7 @@ def play_again():
         if response == "y":
             return True
         elif response == "n":
-            print("Thanks for playing! Your score was " + str(score) + "/" + str(attempts) + ", or " + str(round(score/attempts, 2)*100) + "%.")
+            print(f"Thanks for playing! Your score was {score}/{attempts}, or {(score/attempts)*100}%")
             return False
         else:
             print("Invalid input. Please enter 'y' or 'n'.")
