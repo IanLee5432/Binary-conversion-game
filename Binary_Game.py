@@ -98,3 +98,4 @@ while True:
     # Ask the user if they want to play again
     if not play_again():
         break
+#Parts of this code has been debugged by ChatGPT
